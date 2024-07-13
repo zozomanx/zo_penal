@@ -23,6 +23,15 @@ document.getElementById('closeButton').addEventListener('click', function() {
     return
 });
 
+// Add event listener for the Esc key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        const iframeContainer = document.getElementById('iframeContainer');
+        iframeContainer.style.display = 'none'; // Hide the container
+        $.post('https://zo_penal/close', JSON.stringify({})); // Send to LUA to release NUI focus
+    }
+});
+
 // Watch for "ui" event to enable the Penal Code to open
 window.addEventListener('message', function(event) {
     var item = event.data;
