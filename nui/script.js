@@ -23,11 +23,6 @@ document.getElementById('closeButton').addEventListener('click', function() {
     return
 });
 
-//  $("#closeButton").click(function () {
-//      $.post('https://zo_penal/close', JSON.stringify({}));
-//      return
-//  })
-
 // Watch for "ui" event to enable the Penal Code to open
 window.addEventListener('message', function(event) {
     var item = event.data;
