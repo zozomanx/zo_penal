@@ -1,7 +1,8 @@
+// Start with the window hidden
 iframeContainer.style.display = 'none';
 
 // If true show the penal code, if not hide it.
-function display(bool) {
+function OpenWindow(bool) {
     if (bool) {
         iframeContainer.style.display = 'flex';
     } else {
@@ -18,8 +19,7 @@ document.getElementById('googleSheetIframe').src = googleSheetUrl;
 // Close button functionality
 document.getElementById('closeButton').addEventListener('click', function() {
     const iframeContainer = document.getElementById('iframeContainer');
-    iframeContainer.style.display = 'none'; // Hide the container
-    $.post('https://zo_penal/close', JSON.stringify({})); // Send to LUA to release NUI focus
+    CloseWindow()
     return
 });
 
@@ -27,8 +27,7 @@ document.getElementById('closeButton').addEventListener('click', function() {
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape') {
         const iframeContainer = document.getElementById('iframeContainer');
-        iframeContainer.style.display = 'none'; // Hide the container
-        $.post('https://zo_penal/close', JSON.stringify({})); // Send to LUA to release NUI focus
+        CloseWindow()
     }
 });
 
@@ -37,9 +36,14 @@ window.addEventListener('message', function(event) {
     var item = event.data;
     if (item.type === "ui") {
         if (item.status == true) {
-            display(true)
+            OpenWindow(true)
         } else {
-            display(false)
+            OpenWindow(false)
         }
     }
 })
+
+function CloseWindow() {
+    iframeContainer.style.display = 'none'; // Hide the container
+    $.post('https://zo_penal/close', JSON.stringify({})); // Send to LUA to release NUI focus
+}
