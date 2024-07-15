@@ -1,13 +1,15 @@
-// Start with the window hidden
-iframeContainer.style.display = 'none';
+// Ensure the iframeContainer is initially hidden
+CloseWindow()
 
-// If true show the penal code, if not hide it.
+// Function to show or hide the iframeContainer
 function OpenWindow(bool) {
-    if (bool) {
-        iframeContainer.style.display = 'flex';
-    } else {
-        iframeContainer.style.display = 'none';
-    }
+    document.getElementById('iframeContainer').style.display = bool ? 'flex' : 'none';
+}
+// Function to close the iframeContainer
+function CloseWindow() {
+    document.getElementById('iframeContainer').style.display = 'none';
+
+    $.post('https://zo_penal/close', JSON.stringify({})); // Send to LUA to release NUI focus
 }
 
 // URL to the published Google Sheets document
@@ -18,16 +20,13 @@ document.getElementById('googleSheetIframe').src = googleSheetUrl;
 
 // Close button functionality
 document.getElementById('closeButton').addEventListener('click', function() {
-    const iframeContainer = document.getElementById('iframeContainer');
-    CloseWindow()
-    return
+    CloseWindow();
 });
 
 // Add event listener for the Esc key
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape') {
-        const iframeContainer = document.getElementById('iframeContainer');
-        CloseWindow()
+        CloseWindow();
     }
 });
 
@@ -35,15 +34,6 @@ document.addEventListener('keydown', function(event) {
 window.addEventListener('message', function(event) {
     var item = event.data;
     if (item.type === "ui") {
-        if (item.status == true) {
-            OpenWindow(true)
-        } else {
-            OpenWindow(false)
-        }
+        OpenWindow(item.status);
     }
-})
-
-function CloseWindow() {
-    iframeContainer.style.display = 'none'; // Hide the container
-    $.post('https://zo_penal/close', JSON.stringify({})); // Send to LUA to release NUI focus
-}
+});
